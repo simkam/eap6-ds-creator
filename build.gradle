@@ -1,0 +1,40 @@
+apply plugin: 'groovy'
+apply plugin: 'idea'
+apply plugin: 'application'
+
+group = 'org.jboss.qe'
+version = '1.0.0-SNAPSHOT'
+
+mainClassName = 'org.jboss.qe.dscreator.Main'
+
+idea {
+        project {
+                languageLevel = '1.6'
+        }
+        module {
+                downloadSources = true
+                downloadJavadoc = true
+        }
+}
+
+jar {
+	manifest {
+		attributes (
+			"Main-Class" : "org.jboss.qe.dscreator.Main"
+		)
+	}
+}
+
+task wrapper(type: Wrapper) {
+	gradleVersion = '1.4'
+}
+
+repositories {
+    mavenCentral()
+}
+dependencies {
+    compile 'org.codehaus.groovy:groovy-all:2.2.1'
+    compile 'commons-cli:commons-cli:1.2'
+}
+
+

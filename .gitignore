@@ -4,6 +4,9 @@
 ~
 target
 
+# Gradle work directory
+.gradle
+
 # Build output directies
 /target
 */target

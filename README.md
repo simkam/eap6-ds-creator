@@ -5,17 +5,17 @@
 
 ### Datasource: ###
 Dballocator:
- -datasourceName <name> -jndiName <name> -driverName <driver> -dballocatorProperties <path>
+`-datasourceName <name> -jndiName <name> -driverName <driver> -dballocatorProperties <path>`
 
 Attributes:
--databaseFamily <family> -datasourceName <name> -jndiName <name> -driverName <driver> -connectionUrl <jdbc url> -username <username> -password <password> -jta <true/false> -useJavaContext <true/false>
+`-databaseFamily <family> -datasourceName <name> -jndiName <name> -driverName <driver> -connectionUrl <jdbc url> -username <username> -password <password> -jta <true/false> -useJavaContext <true/false>`
 
 ### XA Datasource: ###
 #### Dballocator: ####
- -xa -datasourceName <name> -jndiName <name> -driverName <driver> -dballocatorProperties <path>
+`-xa -datasourceName <name> -jndiName <name> -driverName <driver> -dballocatorProperties <path>`
 
 #### Attributes: ####
--xa -datasourceName <name> -jndiName <name> -driverName <driver> -username <username> -password <password> -xaDatasourceClass <xa-datasource-class> -xaProps <name=value,name1=value1...>
+`-xa -datasourceName <name> -jndiName <name> -driverName <driver> -username <username> -password <password> -xaDatasourceClass <xa-datasource-class> -xaProps <name=value,name1=value1...>`
 
 ## Development: ##
 

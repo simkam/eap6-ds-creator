@@ -89,7 +89,7 @@ class Main {
                 "Dballocator:\n " +
                 "-datasourceName <name> -jndiName <name> -driverName <driver> -dballocatorProperties <path>\n\n" +
                 "Attributes:\n" +
-                "-datasourceName <name> -jndiName <name> -driverName <driver> -connectionUrl <jdbc url> -jta <true/false> -useJava\n\n" +
+                "-databaseFamily <family> -datasourceName <name> -jndiName <name> -driverName <driver> -connectionUrl <jdbc url> -username <username> -password <password> -jta <true/false> -useJavaContext <true/false>\n\n" +
                 "XA Datasource:\n-------------\n" +
                 "Dballocator:\n " +
                 "-xa -datasourceName <name> -jndiName <name> -driverName <driver> -dballocatorProperties <path>\n\n" +

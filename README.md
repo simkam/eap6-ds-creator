@@ -8,7 +8,7 @@ Dballocator:
  -datasourceName <name> -jndiName <name> -driverName <driver> -dballocatorProperties <path>
 
 Attributes:
--datasourceName <name> -jndiName <name> -driverName <driver> -connectionUrl <jdbc url> -jta <true/false> -useJava
+-databaseFamily <family> -datasourceName <name> -jndiName <name> -driverName <driver> -connectionUrl <jdbc url> -username <username> -password <password> -jta <true/false> -useJavaContext <true/false>
 
 ### XA Datasource: ###
 #### Dballocator: ####

@@ -7,6 +7,9 @@ version = '1.0.0-SNAPSHOT'
 
 mainClassName = 'org.jboss.qe.dscreator.Main'
 
+sourceCompatibility = '1.6'
+targetCompatibility = '1.6'
+
 idea {
         project {
                 languageLevel = '1.6'

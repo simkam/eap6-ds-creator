@@ -14,7 +14,7 @@ class PostgreSqlPlusXADatasource extends AbstractXADatasource<PostgreSqlPlusXADa
         if(serverName == null) {
             throw new NullPointerException()
         }
-        this.xaDatasourceProperty(new XADatasourceProperty("ServerName", serverName))
+        this.dsXaDatasourceProperty(new XADatasourceProperty("ServerName", serverName))
         return this
     }
 
@@ -22,7 +22,7 @@ class PostgreSqlPlusXADatasource extends AbstractXADatasource<PostgreSqlPlusXADa
         if(portNumber == null) {
             throw new NullPointerException()
         }
-        this.xaDatasourceProperty(new XADatasourceProperty("PortNumber", portNumber))
+        this.dsXaDatasourceProperty(new XADatasourceProperty("PortNumber", portNumber))
         return this
     }
 
@@ -30,7 +30,7 @@ class PostgreSqlPlusXADatasource extends AbstractXADatasource<PostgreSqlPlusXADa
         if(databaseName == null) {
             throw new NullPointerException()
         }
-        this.xaDatasourceProperty(new XADatasourceProperty("DatabaseName", databaseName))
+        this.dsXaDatasourceProperty(new XADatasourceProperty("DatabaseName", databaseName))
         return this
     }
 }

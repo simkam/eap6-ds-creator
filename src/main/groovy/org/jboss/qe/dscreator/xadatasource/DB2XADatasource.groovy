@@ -8,7 +8,7 @@ class DB2XADatasource extends AbstractXADatasource<DB2XADatasource> {
 
     DB2XADatasource() {
         super()
-        this.xaDatasourceProperty(DEFAULT_DRIVER_TYPE_PROPERTY)
+        this.dsXaDatasourceProperty(DEFAULT_DRIVER_TYPE_PROPERTY)
     }
 
     @Override
@@ -20,7 +20,7 @@ class DB2XADatasource extends AbstractXADatasource<DB2XADatasource> {
         if(serverName == null) {
             throw new NullPointerException()
         }
-        this.xaDatasourceProperty(new XADatasourceProperty("ServerName", serverName))
+        this.dsXaDatasourceProperty(new XADatasourceProperty("ServerName", serverName))
         return this
     }
 
@@ -28,7 +28,7 @@ class DB2XADatasource extends AbstractXADatasource<DB2XADatasource> {
         if(portNumber == null) {
             throw new NullPointerException()
         }
-        this.xaDatasourceProperty(new XADatasourceProperty("PortNumber", portNumber))
+        this.dsXaDatasourceProperty(new XADatasourceProperty("PortNumber", portNumber))
         return this
     }
 
@@ -36,7 +36,7 @@ class DB2XADatasource extends AbstractXADatasource<DB2XADatasource> {
         if(databaseName == null) {
             throw new NullPointerException()
         }
-        this.xaDatasourceProperty(new XADatasourceProperty("DatabaseName", databaseName))
+        this.dsXaDatasourceProperty(new XADatasourceProperty("DatabaseName", databaseName))
         return this
     }
 

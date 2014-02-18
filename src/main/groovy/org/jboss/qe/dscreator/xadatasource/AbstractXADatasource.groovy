@@ -6,149 +6,151 @@ import groovy.xml.MarkupBuilder
  * @author Martin Simka
  */
 abstract class AbstractXADatasource<T extends AbstractXADatasource<T>> implements XADatasource {
-    private String name;
-    private String jndiName
-    private String poolName
-    private Boolean enabled
-    private String driver
-    private String username
-    private String password
-    private String xaDatasourceClass
-    private List<XADatasourceProperty> xaDatasourceProperties
+    private String dsName;
+    private String dsJndiName
+    private String dsPoolName
+    private Boolean dsEnabled
+    private String dsDriver
+    private String dsUsername
+    private String dsPassword
+    private String dsXaDatasourceClass
+    private List<XADatasourceProperty> dsXaDatasourceProperties
 
     protected AbstractXADatasource() {
-        xaDatasourceProperties = new ArrayList<XADatasourceProperty>()
+        dsXaDatasourceProperties = new ArrayList<XADatasourceProperty>()
     }
 
     protected abstract T me();
 
     @Override
-    String getName() {
-        return name
+    String getDsName() {
+        return dsName
     }
 
-    T name(String name) {
-        this.name = name
+    T dsName(String dsName) {
+        this.dsName = dsName
         return me()
     }
 
     @Override
-    String getJndiName() {
-        return jndiName
+    String getDsJndiName() {
+        return dsJndiName
     }
 
-    T jndiName(String jndiName) {
-        if(jndiName == null) {
+    T dsJndiName(String dsJndiName) {
+        if(dsJndiName == null) {
             throw new NullPointerException()
         }
-        this.jndiName = jndiName
+        this.dsJndiName = dsJndiName
         return me()
     }
 
     @Override
-    String getPoolName() {
-        return poolName
+    String getDsPoolName() {
+        return dsPoolName
     }
 
-    T poolName(String poolName) {
-        if(poolName == null) {
+    T dsPoolName(String dsPoolName) {
+        if(dsPoolName == null) {
             throw new NullPointerException()
         }
-        this.poolName = poolName
+        this.dsPoolName = dsPoolName
         return me()
     }
 
     @Override
-    String getUsername() {
-        return username
+    String getDsUsername() {
+        return dsUsername
     }
 
-    T username(String username) {
-        if(username == null) {
+    T dsUsername(String dsUsername) {
+        if(dsUsername == null) {
             throw new NullPointerException()
         }
-        this.username = username
+        this.dsUsername = dsUsername
         return me()
     }
 
     @Override
-    String getPassword() {
-        return password
+    String getDsPassword() {
+        return dsPassword
     }
 
-    T password(String password) {
-        if(password == null) {
+    T dsPassword(String dsPassword) {
+        if(dsPassword == null) {
             throw new NullPointerException()
         }
-        this.password = password
+        this.dsPassword = dsPassword
         return me()
     }
 
     @Override
-    String getDriver() {
-        return driver
+    String getDsDriver() {
+        return dsDriver
     }
 
-    T driver(String driver) {
-        if(driver == null) {
+    T dsDriver(String dsDriver) {
+        if(dsDriver == null) {
             throw new NullPointerException()
         }
-        this.driver = driver
+        this.dsDriver = dsDriver
         return me()
     }
 
     @Override
-    String getXADatasourceClass() {
-        return xaDatasourceClass
+    String getDsXADatasourceClass() {
+        return dsXaDatasourceClass
     }
 
-    T xaDatasourceClass(String xaDatasourceClass) {
-        if(xaDatasourceClass == null) {
+    T dsXaDatasourceClass(String dsXaDatasourceClass) {
+        if(dsXaDatasourceClass == null) {
             throw new NullPointerException()
         }
-        this.xaDatasourceClass = xaDatasourceClass
+        this.dsXaDatasourceClass = dsXaDatasourceClass
         return me()
     }
 
     @Override
-    Boolean getEnabled() {
-        return enabled
+    Boolean getDsEnabled() {
+        return dsEnabled
     }
 
-    T enabled(boolean enabled) {
-        this.enabled = enabled
+    T dsEnabled(boolean dsEnabled) {
+        this.dsEnabled = dsEnabled
         return me()
     }
 
     @Override
-    List<XADatasourceProperty> getXADatasourceProperties() {
-        return xaDatasourceProperties
+    List<XADatasourceProperty> getDsXADatasourceProperties() {
+        return dsXaDatasourceProperties
     }
 
-    T xaDatasourceProperty(XADatasourceProperty xaDatasourceProperty) {
-        if(xaDatasourceProperty == null) {
+    T dsXaDatasourceProperty(XADatasourceProperty dsXaDatasourceProperty) {
+        if(dsXaDatasourceProperty == null) {
             throw new NullPointerException()
         }
-        xaDatasourceProperties.add(xaDatasourceProperty)
+        dsXaDatasourceProperties.add(dsXaDatasourceProperty)
         return me()
     }
 
     @Override
     String toXml() {
-        StringWriter sb = new StringWriter()
-        MarkupBuilder xml = new MarkupBuilder(sb)
-        xml.doubleQuotes = true
-        xml.'xa-datasource'("jndi-name": jndiName, "pool-name": poolName, enabled: enabled, name: name) {
-            getXADatasourceProperties().each { prop ->
-                'xa-datasource-property'(name: prop.getName(), prop.getValue()){}
-            }
-            'xa-datasource-class'(getXADatasourceClass()) {}
-            driver(driver){}
-            security() {
-                'user-name'(username){}
-                password(password){}
-            }
-        }
-        return sb.toString()
+		def markupBuilder = new groovy.xml.StreamingMarkupBuilder()
+		markupBuilder.encoding = "UTF-8"
+		markupBuilder.useDoubleQuotes = true
+		
+		return markupBuilder.bind {
+			'xa-datasource'("jndi-name": dsJndiName, "pool-name": dsPoolName, enabled: dsEnabled, name: dsName) {
+	            getDsXADatasourceProperties().each { prop ->
+	                'xa-datasource-property'(name: prop.getName(), prop.getValue())
+	            }
+	            'xa-datasource-class'(getDsXADatasourceClass())
+	            driver(dsDriver)
+	            security() {
+	                'user-name'(dsUsername)
+	                password(dsPassword)
+	            }
+	        }
+		}
     }
 }

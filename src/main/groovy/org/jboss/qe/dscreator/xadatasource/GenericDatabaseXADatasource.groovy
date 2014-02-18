@@ -13,7 +13,7 @@ class GenericDatabaseXADatasource extends AbstractXADatasource<GenericDatabaseXA
         if(url == null) {
             throw new NullPointerException()
         }
-        this.xaDatasourceProperty(new XADatasourceProperty("URL", url))
+        this.dsXaDatasourceProperty(new XADatasourceProperty("URL", url))
         return this
     }
 

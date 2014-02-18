@@ -59,5 +59,4 @@ local-repo-eap
 #These keep hanging around
 arquillian/*/server.log*
 client/shade/dependency-reduced-pom.xml
-
-
+run.txt

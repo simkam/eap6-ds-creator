@@ -23,31 +23,31 @@ class DatasourceFactory {
 
     private static GenericDatabaseDatasource createGenericDatabaseDatasource(Properties props, String name, String jndiName, String driver) {
         GenericDatabaseDatasource ds = new GenericDatabaseDatasource()
-                .name(name)
-                .connectionUrl(props.getProperty("db.jdbc_url"))
-                .username(props.getProperty("db.username"))
-                .password(props.getProperty("db.password"))
-                .jta(true)
-                .poolName(name + "_pool")
-                .driver(driver)
-                .enabled(true)
-                .useJavaContext(true)
-                .jndiName(jndiName)
+                .dsName(name)
+                .dsConnectionUrl(props.getProperty("db.jdbc_url"))
+                .dsUsername(props.getProperty("db.username"))
+                .dsPassword(props.getProperty("db.password"))
+                .dsJta(true)
+                .dsPoolName(name + "_pool")
+                .dsDriver(driver)
+                .dsEnabled(true)
+                .dsUseJavaContext(true)
+                .dsJndiName(jndiName)
         return ds
     }
 
     private static GenericDatabaseDatasource createGenericDatabaseDatasource(String name, String jndiName, String driver, String connnectionUrl, String username, String password, boolean jta, boolean useJavaContext) {
         GenericDatabaseDatasource ds = new GenericDatabaseDatasource()
-                .name(name)
-                .connectionUrl(connnectionUrl)
-                .username(username)
-                .password(password)
-                .jta(jta)
-                .poolName(name + "_pool")
-                .driver(driver)
-                .enabled(true)
-                .useJavaContext(useJavaContext)
-                .jndiName(jndiName)
+                .dsName(name)
+                .dsConnectionUrl(connnectionUrl)
+                .dsUsername(username)
+                .dsPassword(password)
+                .dsJta(jta)
+                .dsPoolName(name + "_pool")
+                .dsDriver(driver)
+                .dsEnabled(true)
+                .dsUseJavaContext(useJavaContext)
+                .dsJndiName(jndiName)
         return ds
     }
 }

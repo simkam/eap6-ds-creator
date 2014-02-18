@@ -14,7 +14,7 @@ class OracleXADatasource extends AbstractXADatasource<OracleXADatasource> {
         if(url == null) {
             throw new NullPointerException()
         }
-        this.xaDatasourceProperty(new XADatasourceProperty("URL", url))
+        this.dsXaDatasourceProperty(new XADatasourceProperty("URL", url))
         return this
     }
 
@@ -22,7 +22,7 @@ class OracleXADatasource extends AbstractXADatasource<OracleXADatasource> {
         if(databaseName == null) {
             throw new NullPointerException()
         }
-        this.xaDatasourceProperty(new XADatasourceProperty("DatabaseName", databaseName))
+        this.dsXaDatasourceProperty(new XADatasourceProperty("DatabaseName", databaseName))
         return this
     }
 

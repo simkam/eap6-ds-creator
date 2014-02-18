@@ -1,6 +1,7 @@
 package org.jboss.qe.dscreator
 
 import groovy.xml.XmlUtil;
+import groovy.xml.StreamingMarkupBuilder;
 
 import org.jboss.qe.dscreator.common.XMLFormattable;
 import org.jboss.qe.dscreator.common.XMLFormatter;
@@ -17,23 +18,22 @@ class Main {
 
     public static void main(String[] args) {
         CliBuilder cli = new CliBuilder();
-		cli.with {
-	        cli.datasourceName(args: 1, argName: "datasource name", "datasource name")
-	        cli.jndiName(args: 1, argName: "jndi name", "jndi name")
-	        cli.driverName(args: 1, argName: "driver name", "driver name")
-	        cli.dballocatorProperties(args: 1, argName: "path", "properties file path")
-	
-	        cli.connectionUrl(args: 1, argName: "jdbc url", "jdbc url")
-	        cli.username(args: 1, argName: "username", "username")
-	        cli.password(args: 1, argName: "password", "password")
-	        cli.jta(args: 1, argName: "jta", "jta", type: Boolean)
-	        cli.useJavaContext(args: 1, argName: "use java context", "use java context", type: Boolean)
-	        cli.databaseFamily(args: 1, argName: "database family", "database family")
-	        cli.xa("xa datasource")
-	        cli.xaDatasourceClass("xa datasource class")
-	        cli.xaProps(args: 1, argName: "xa properties=value pair separated by comma", "xa property name and value")
-			cli.out(args:1, argName: "path of output file", "output file where data will be printed instead of standard output")
-		}
+	    cli.datasourceName(args: 1, argName: "datasource name", "datasource name")
+        cli.jndiName(args: 1, argName: "jndi name", "jndi name")
+        cli.driverName(args: 1, argName: "driver name", "driver name")
+        cli.dballocatorProperties(args: 1, argName: "path", "properties file path")
+
+        cli.connectionUrl(args: 1, argName: "jdbc url", "jdbc url")
+        cli.username(args: 1, argName: "username", "username")
+        cli.password(args: 1, argName: "password", "password")
+        cli.jta(args: 1, argName: "jta", "jta", type: Boolean)
+        cli.useJavaContext(args: 1, argName: "use java context", "use java context", type: Boolean)
+        cli.databaseFamily(args: 1, argName: "database family", "database family")
+        cli.xa("xa datasource")
+        cli.xaDatasourceClass("xa datasource class")
+        cli.xaProps(args: 1, argName: "xa properties=value pair separated by comma", "xa property name and value")
+		cli.out(args:1, argName: "path of output file", "output file where data will be printed instead of standard output")
+        cli.config(args:1, argName: "path to standalone.xml file", "path to standalone.xml where the datasource will be added")
 
         OptionAccessor opt = cli.parse(args)
 		
@@ -81,7 +81,24 @@ class Main {
 			def xmlOut = XmlUtil.serialize("\n<datasources>" + datasourceOutput.toXml() + "</datasources>");
             fileWriter.write(xmlOut)
             fileWriter.flush()
+            println "Result XML was saved to file " << opt.out
+		} else if (opt.config){
+            def standaloneXmlNode = new XmlParser(false, true).parseText(new File(opt.config).text)
+            def datasourceNode = new XmlParser(false, true).parseText(datasourceOutput.toXml())
+
+            // we want to have new datasource if it's not added yet
+            String datasourceType = opt.xa ? 'xa-datasource' : 'datasource'          
+            if(standaloneXmlNode.profile.subsystem.datasources."${datasourceType}".find{it.'@name' == opt.datasourceName} == null) {
+                // warn: not sure why but appendNode does strange things here                
+                standaloneXmlNode.profile.subsystem.datasources[0]?.append(datasourceNode)
+             }
+            
+            // writing results back to config file (standalone.xml)
+            new XmlNodePrinter(new PrintWriter(opt.config)).print(standaloneXmlNode)
+            
+            println "XML was added to config file " << opt.config
 		} else {
+            // print the newnly created datasource to std out
 			println formatter.prettyXML(datasourceOutput.toXml())
 		}
     }
@@ -103,7 +120,8 @@ class Main {
         print "Usage:\n\n" +
                 "Datasource:\n-------------\n" +
 				"General optional arguments \n" +
-				"-out filename\n" +
+				"-out path/to/outputfile.xml\n" +
+                "-config path/to/standalone.xml\n" +
 				"\n" +
                 "Dballocator:\n " +
                 "-datasourceName <name> -jndiName <name> -driverName <driver> -dballocatorProperties <path>\n\n" +

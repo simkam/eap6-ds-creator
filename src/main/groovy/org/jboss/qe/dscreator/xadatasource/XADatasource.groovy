@@ -14,5 +14,10 @@ public interface XADatasource extends XMLFormattable {
     String getDsDriver()
     String getDsXADatasourceClass()
     Boolean getDsEnabled()
-    List<XADatasourceProperty> getDsXADatasourceProperties();
+    List<XADatasourceProperty> getDsXADatasourceProperties()
+    
+    /**
+     * Method which build upon the builder some new part of the xml tree
+     */
+    def buildValidation(builder)
 }

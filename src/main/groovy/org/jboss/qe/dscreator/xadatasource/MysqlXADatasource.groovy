@@ -4,7 +4,9 @@ package org.jboss.qe.dscreator.xadatasource
  * @author Martin Simka
  */
 class MysqlXADatasource extends AbstractXADatasource<MysqlXADatasource> {
-
+    private static final String CHECKER_CLASS = "org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLValidConnectionChecker"
+    private static final String EXCEPTION_SORTER_CLASS = "org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLExceptionSorter"
+    
     @Override
     protected MysqlXADatasource me() {
         return this
@@ -32,5 +34,12 @@ class MysqlXADatasource extends AbstractXADatasource<MysqlXADatasource> {
         }
         this.dsXaDatasourceProperty(new XADatasourceProperty("DatabaseName", databaseName))
         return this
+    }
+    
+    def buildValidation(builder) {
+        builder.validation{
+            'valid-connection-checker'('class-name': CHECKER_CLASS)
+            'exception-sorter'('class-name': EXCEPTION_SORTER_CLASS)
+        }
     }
 }

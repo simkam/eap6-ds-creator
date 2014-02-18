@@ -4,6 +4,7 @@ package org.jboss.qe.dscreator.xadatasource
  * @author Martin Simka
  */
 class MSSqlXADatasource extends AbstractXADatasource<MSSqlXADatasource> {
+    private static final String CHECKER_CLASS = "org.jboss.jca.adapters.jdbc.extensions.mssql.MSSQLValidConnectionChecker"
 
     @Override
     protected MSSqlXADatasource me() {
@@ -32,5 +33,11 @@ class MSSqlXADatasource extends AbstractXADatasource<MSSqlXADatasource> {
         }
         this.dsXaDatasourceProperty(new XADatasourceProperty("DatabaseName", databaseName))
         return this
+    }
+    
+    def buildValidation(builder) {
+        builder.validation{
+            'valid-connection-checker'('class-name': CHECKER_CLASS)
+        }
     }
 }

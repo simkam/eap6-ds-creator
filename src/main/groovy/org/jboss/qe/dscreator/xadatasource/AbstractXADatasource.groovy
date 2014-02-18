@@ -139,7 +139,7 @@ abstract class AbstractXADatasource<T extends AbstractXADatasource<T>> implement
 		markupBuilder.encoding = "UTF-8"
 		markupBuilder.useDoubleQuotes = true
 		
-		return markupBuilder.bind {
+		return markupBuilder.bind { builder ->
 			'xa-datasource'("jndi-name": dsJndiName, "pool-name": dsPoolName, enabled: dsEnabled, name: dsName) {
 	            getDsXADatasourceProperties().each { prop ->
 	                'xa-datasource-property'(name: prop.getName(), prop.getValue())
@@ -150,6 +150,7 @@ abstract class AbstractXADatasource<T extends AbstractXADatasource<T>> implement
 	                'user-name'(dsUsername)
 	                password(dsPassword)
 	            }
+                buildValidation builder
 	        }
 		}
     }

@@ -17,5 +17,6 @@ class GenericDatabaseXADatasource extends AbstractXADatasource<GenericDatabaseXA
         return this
     }
 
-
+    def buildValidation(builder) {
+    }
 }

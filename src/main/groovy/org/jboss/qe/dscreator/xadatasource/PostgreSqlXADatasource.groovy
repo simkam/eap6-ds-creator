@@ -4,7 +4,9 @@ package org.jboss.qe.dscreator.xadatasource
  * @author Martin Simka
  */
 class PostgreSqlXADatasource extends AbstractXADatasource<PostgreSqlXADatasource> {
-
+    private static final String CHECKER_CLASS = "org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"
+    private static final String EXCEPTION_SORTER_CLASS = "org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"
+        
     @Override
     protected PostgreSqlXADatasource me() {
         return this
@@ -14,7 +16,7 @@ class PostgreSqlXADatasource extends AbstractXADatasource<PostgreSqlXADatasource
         if(serverName == null) {
             throw new NullPointerException()
         }
-        this.xaDatasourceProperty(new XADatasourceProperty("ServerName", serverName))
+        this.dsXaDatasourceProperty(new XADatasourceProperty("ServerName", serverName))
         return this
     }
 
@@ -22,7 +24,7 @@ class PostgreSqlXADatasource extends AbstractXADatasource<PostgreSqlXADatasource
         if(portNumber == null) {
             throw new NullPointerException()
         }
-        this.xaDatasourceProperty(new XADatasourceProperty("PortNumber", portNumber))
+        this.dsXaDatasourceProperty(new XADatasourceProperty("PortNumber", portNumber))
         return this
     }
 
@@ -30,7 +32,14 @@ class PostgreSqlXADatasource extends AbstractXADatasource<PostgreSqlXADatasource
         if(databaseName == null) {
             throw new NullPointerException()
         }
-        this.xaDatasourceProperty(new XADatasourceProperty("DatabaseName", databaseName))
+        this.dsXaDatasourceProperty(new XADatasourceProperty("DatabaseName", databaseName))
         return this
+    }
+    
+    def buildValidation(builder) {
+        builder.validation{
+            'valid-connection-checker'('class-name': CHECKER_CLASS)
+            'exception-sorter'('class-name': EXCEPTION_SORTER_CLASS)
+        }
     }
 }

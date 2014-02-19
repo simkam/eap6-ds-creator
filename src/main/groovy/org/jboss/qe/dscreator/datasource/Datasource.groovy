@@ -1,19 +1,23 @@
 package org.jboss.qe.dscreator.datasource
 
+import org.jboss.qe.dscreator.common.XMLFormattable;
+
+import com.sun.xml.internal.ws.api.config.management.policy.ManagedServiceAssertion.ImplementationRecord;
+
+
 /**
  * @author Martin Simka
  */
-interface Datasource {
+interface Datasource extends XMLFormattable {
 
-   String getName()
-   String getJndiName()
-   String getPoolName()
-   String getConnectionUrl()
-   String getDriver()
-   String getUsername()
-   String getPassword()
-   Boolean getUseJavaContext()
-   Boolean getEnabled()
-   Boolean getJta()
-   String toXml()
+   String getDsName()
+   String getDsJndiName()
+   String getDsPoolName()
+   String getDsConnectionUrl()
+   String getDsDriver()
+   String getDsUsername()
+   String getDsPassword()
+   Boolean isDsUseJavaContext()
+   Boolean isDsEnabled()
+   Boolean isDsJta()
 }

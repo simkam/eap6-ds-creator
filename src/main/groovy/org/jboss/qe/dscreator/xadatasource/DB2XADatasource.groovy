@@ -5,10 +5,14 @@ package org.jboss.qe.dscreator.xadatasource
  */
 class DB2XADatasource extends AbstractXADatasource<DB2XADatasource> {
     private static final XADatasourceProperty DEFAULT_DRIVER_TYPE_PROPERTY = new XADatasourceProperty("DriverType", "4")
+    private static final VALID_CHECKER_CLASS = "org.jboss.jca.adapters.jdbc.extensions.db2.DB2ValidConnectionChecker"
+    private static final STALE_CHECKER_CLASS = "org.jboss.jca.adapters.jdbc.extensions.db2.DB2StaleConnectionChecker"
+    private static final EXCEPTION_SORTER_CLASS = "org.jboss.jca.adapters.jdbc.extensions.db2.DB2ExceptionSorter"
+    private static final RECOVERY_PLUGIN_CLASS = "org.jboss.jca.core.recovery.ConfigurableRecoveryPlugin"
 
     DB2XADatasource() {
         super()
-        this.xaDatasourceProperty(DEFAULT_DRIVER_TYPE_PROPERTY)
+        this.dsXaDatasourceProperty(DEFAULT_DRIVER_TYPE_PROPERTY)
     }
 
     @Override
@@ -20,7 +24,7 @@ class DB2XADatasource extends AbstractXADatasource<DB2XADatasource> {
         if(serverName == null) {
             throw new NullPointerException()
         }
-        this.xaDatasourceProperty(new XADatasourceProperty("ServerName", serverName))
+        this.dsXaDatasourceProperty(new XADatasourceProperty("ServerName", serverName))
         return this
     }
 
@@ -28,7 +32,7 @@ class DB2XADatasource extends AbstractXADatasource<DB2XADatasource> {
         if(portNumber == null) {
             throw new NullPointerException()
         }
-        this.xaDatasourceProperty(new XADatasourceProperty("PortNumber", portNumber))
+        this.dsXaDatasourceProperty(new XADatasourceProperty("PortNumber", portNumber))
         return this
     }
 
@@ -36,7 +40,7 @@ class DB2XADatasource extends AbstractXADatasource<DB2XADatasource> {
         if(databaseName == null) {
             throw new NullPointerException()
         }
-        this.xaDatasourceProperty(new XADatasourceProperty("DatabaseName", databaseName))
+        this.dsXaDatasourceProperty(new XADatasourceProperty("DatabaseName", databaseName))
         return this
     }
 
@@ -50,5 +54,19 @@ class DB2XADatasource extends AbstractXADatasource<DB2XADatasource> {
         int index = this.getXADatasourceProperties().indexOf(DEFAULT_DRIVER_TYPE_PROPERTY)
         this.getXADatasourceProperties().set(index, new XADatasourceProperty("DriverType", driverType))
         return this
+    }
+    
+    def buildValidation(builder) {
+        builder.validation {
+            'valid-connection-checker'('class-name': VALID_CHECKER_CLASS)
+            'stale-connection-checker'('class-name': STALE_CHECKER_CLASS)
+            'exception-sorter'('class-name': EXCEPTION_SORTER_CLASS)
+        }
+        builder.recovery {
+           'recover-plugin'('class-name': RECOVERY_PLUGIN_CLASS)
+           'config-property'('name': "EnableIsValid", false)
+           'config-property'('name': "IsValidOverride", false)
+           'config-property'('name': "EnableClose", false)
+        }
     }
 }

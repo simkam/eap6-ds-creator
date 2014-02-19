@@ -1,155 +1,158 @@
 package org.jboss.qe.dscreator.datasource
 
 import groovy.xml.MarkupBuilder
+import groovy.xml.StreamingMarkupBuilder;
 
 /**
  * @author Martin Simka
  */
 abstract class AbstractDatasource<T extends AbstractDatasource<T>> implements Datasource{
-    private String name;
-    private String jndiName
-    private String poolName
-    private Boolean useJavaContext
-    private Boolean enabled
-    private Boolean jta
-    private String driver
-    private String username
-    private String password
-    private String connectionUrl
+    private String dsName;
+    private String dsJndiName
+    private String dsPoolName
+    private Boolean dsUseJavaContext
+    private Boolean dsEnabled
+    private Boolean dsJta
+    private String dsDriver
+    private String dsUsername
+    private String dsPassword
+    private String dsConnectionUrl
 
     protected abstract T me();
 
     @Override
-    public String getName() {
-        return name
+    public String getDsName() {
+        return dsName
     }
 
-    T name(String name) {
-        this.name = name
+    T dsName(String dsName) {
+        this.dsName = dsName
         return me()
     }
 
     @Override
-    public String getJndiName() {
-        return jndiName
+    public String getDsJndiName() {
+        return dsJndiName
     }
 
-    T jndiName(String jndiName) {
-        if(jndiName == null) {
+    T dsJndiName(String dsJndiName) {
+        if(dsJndiName == null) {
             throw new NullPointerException()
         }
-        this.jndiName = jndiName
+        this.dsJndiName = dsJndiName
         return me()
     }
 
     @Override
-    public String getPoolName() {
-        return poolName
+    public String getDsPoolName() {
+        return dsPoolName
     }
 
-    T poolName(String poolName) {
-        if(poolName == null) {
+    T dsPoolName(String dsPoolName) {
+        if(dsPoolName == null) {
             throw new NullPointerException()
         }
-        this.poolName = poolName
+        this.dsPoolName = dsPoolName
         return me()
     }
 
     @Override
-    public String getConnectionUrl() {
-        return connectionUrl
+    public String getDsConnectionUrl() {
+        return dsConnectionUrl
     }
 
-    T connectionUrl(String connectionUrl) {
-        if(connectionUrl == null) {
+    T dsConnectionUrl(String dsConnectionUrl) {
+        if(dsConnectionUrl == null) {
             throw new NullPointerException()
         }
-        this.connectionUrl = connectionUrl
+        this.dsConnectionUrl = dsConnectionUrl
         return me()
     }
 
     @Override
-    public String getDriver() {
-        return driver
+    public String getDsDriver() {
+        return dsDriver
     }
 
-    T driver(String driver) {
-        if(driver == null) {
+    T dsDriver(String dsDriver) {
+        if(dsDriver == null) {
             throw new NullPointerException()
         }
-        this.driver = driver
+        this.dsDriver = dsDriver
         return me()
     }
 
 
     @Override
-    public String getUsername() {
-        return username
+    public String getDsUsername() {
+        return dsUsername
     }
 
-    T username(String username) {
-        if(username == null) {
+    T dsUsername(String dsUsername) {
+        if(dsUsername == null) {
             throw new NullPointerException()
         }
-        this.username = username
+        this.dsUsername = dsUsername
         return me()
     }
 
     @Override
-    public String getPassword() {
-        return password
+    public String getDsPassword() {
+        return dsPassword
     }
 
-    T password(String password) {
-        if(password == null) {
+    T dsPassword(String dsPassword) {
+        if(dsPassword == null) {
             throw new NullPointerException()
         }
-        this.password = password
+        this.dsPassword = dsPassword
         return me()
     }
 
     @Override
-    public Boolean getUseJavaContext() {
-        return useJavaContext
+    public Boolean isDsUseJavaContext() {
+        return dsUseJavaContext
     }
 
-    T useJavaContext(boolean useJavaContext) {
-        this.useJavaContext = useJavaContext
+    T dsUseJavaContext(boolean dsUseJavaContext) {
+        this.dsUseJavaContext = dsUseJavaContext
         return me();
     }
 
     @Override
-    public Boolean getEnabled() {
-        return enabled
+    public Boolean isDsEnabled() {
+        return dsEnabled
     }
 
-    T enabled(boolean enabled) {
-        this.enabled = enabled
+    T dsEnabled(boolean dsEnabled) {
+        this.dsEnabled = dsEnabled
         return me()
     }
 
     @Override
-    public Boolean getJta() {
-        return jta
+    public Boolean isDsJta() {
+        return dsJta
     }
 
-    T jta(boolean jta) {
-        this.jta = jta
+    T dsJta(boolean dsJta) {
+        this.dsJta = dsJta
         return me()
     }
 
-    public String toXml() {
-        StringWriter sb = new StringWriter()
-        MarkupBuilder xml = new MarkupBuilder(sb)
-        xml.doubleQuotes = true
-        xml.datasource(jta: jta, "jndi-name": jndiName, "pool-name": poolName, enabled: enabled, "use-java-context": useJavaContext, name : name) {
-            'connection-url'(connectionUrl){}
-            driver(driver){}
-            security() {
-                'user-name'(username){}
-                password(password){}
-            }
-        }
-        return sb.toString()
-    }
+    String toXml() {
+		def markupBuilder = new StreamingMarkupBuilder()
+        markupBuilder.encoding = "UTF-8"
+        markupBuilder.useDoubleQuotes = true
+		
+		return markupBuilder.bind {
+		    datasource(jta: dsJta, "jndi-name": dsJndiName, "pool-name": dsPoolName, enabled: dsEnabled, "use-java-context": dsUseJavaContext, name : dsName) {
+				'connection-url'(dsConnectionUrl)
+				driver(dsDriver)
+				security() {
+					'user-name'(dsUsername)
+					password(dsPassword)
+				}
+			}
+		}
+	}
 }

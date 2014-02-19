@@ -4,6 +4,7 @@ package org.jboss.qe.dscreator.xadatasource
  * @author Martin Simka
  */
 class MSSqlXADatasource extends AbstractXADatasource<MSSqlXADatasource> {
+    private static final String CHECKER_CLASS = "org.jboss.jca.adapters.jdbc.extensions.mssql.MSSQLValidConnectionChecker"
 
     @Override
     protected MSSqlXADatasource me() {
@@ -14,7 +15,7 @@ class MSSqlXADatasource extends AbstractXADatasource<MSSqlXADatasource> {
         if(serverName == null) {
             throw new NullPointerException()
         }
-        this.xaDatasourceProperty(new XADatasourceProperty("ServerName", serverName))
+        this.dsXaDatasourceProperty(new XADatasourceProperty("ServerName", serverName))
         return this
     }
 
@@ -22,7 +23,7 @@ class MSSqlXADatasource extends AbstractXADatasource<MSSqlXADatasource> {
         if(portNumber == null) {
             throw new NullPointerException()
         }
-        this.xaDatasourceProperty(new XADatasourceProperty("PortNumber", portNumber))
+        this.dsXaDatasourceProperty(new XADatasourceProperty("PortNumber", portNumber))
         return this
     }
 
@@ -30,7 +31,13 @@ class MSSqlXADatasource extends AbstractXADatasource<MSSqlXADatasource> {
         if(databaseName == null) {
             throw new NullPointerException()
         }
-        this.xaDatasourceProperty(new XADatasourceProperty("DatabaseName", databaseName))
+        this.dsXaDatasourceProperty(new XADatasourceProperty("DatabaseName", databaseName))
         return this
+    }
+    
+    def buildValidation(builder) {
+        builder.validation{
+            'valid-connection-checker'('class-name': CHECKER_CLASS)
+        }
     }
 }

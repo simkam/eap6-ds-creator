@@ -17,6 +17,11 @@ Attributes:
 #### Attributes: ####
 `-xa -datasourceName <name> -jndiName <name> -driverName <driver> -username <username> -password <password> -xaDatasourceClass <xa-datasource-class> -xaProps <name=value,name1=value1...>`
 
+### General options: ###
+`-out filename` to output the xml to a file (ds.xml)
+
+`-config standalone.xml` output the datsource xml to standalone.xml configuration file
+
 ## Development: ##
 
 ####Gradle tasks: ####

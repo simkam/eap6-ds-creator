@@ -1,6 +1,7 @@
 apply plugin: 'groovy'
 apply plugin: 'idea'
 apply plugin: 'application'
+apply plugin: 'maven-publish'
 
 group = 'org.jboss.qe'
 version = '1.0.0-SNAPSHOT'
@@ -41,3 +42,10 @@ dependencies {
 }
 
 
+publishing {
+  publications {
+    mavenJava(MavenPublication) {
+        from components.java
+    }
+  }
+}

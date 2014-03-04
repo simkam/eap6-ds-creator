@@ -5,6 +5,7 @@ import groovy.xml.StreamingMarkupBuilder;
 
 import org.jboss.qe.dscreator.common.XMLFormattable;
 import org.jboss.qe.dscreator.common.XMLFormatter;
+import org.jboss.qe.dscreator.common.XMLPrinter;
 import org.jboss.qe.dscreator.datasource.Datasource
 import org.jboss.qe.dscreator.datasource.DatasourceFactory
 import org.jboss.qe.dscreator.xadatasource.XADatasource
@@ -70,35 +71,21 @@ class Main {
             }
         }
 		
-		XMLFormatter formatter = new XMLFormatter();
-		
+        XMLPrinter printer = new XMLPrinter();
 		if(datasourceOutput == null) {
 			// conditions for creating datasource were not fullfiled
 			printUsage();
 		} else if (opt.out) {
 			// printing to file
-			FileWriter fileWriter = new FileWriter(opt.out)
-			def xmlOut = XmlUtil.serialize("\n<datasources>" + datasourceOutput.toXml() + "</datasources>");
-            fileWriter.write(xmlOut)
-            fileWriter.flush()
+            printer.printToFile(datasourceOutput, opt.out);
             println "Result XML was saved to file " << opt.out
 		} else if (opt.config){
-            def standaloneXmlNode = new XmlParser(false, true).parseText(new File(opt.config).text)
-            def datasourceNode = new XmlParser(false, true).parseText(datasourceOutput.toXml())
-
-            // we want to have new datasource if it's not added yet
-            String datasourceType = opt.xa ? 'xa-datasource' : 'datasource'          
-            if(standaloneXmlNode.profile.subsystem.datasources."${datasourceType}".find{it.'@name' == opt.datasourceName} == null) {
-                // warn: not sure why but appendNode does strange things here                
-                standaloneXmlNode.profile.subsystem.datasources[0]?.append(datasourceNode)
-             }
-            
-            // writing results back to config file (standalone.xml)
-            new XmlNodePrinter(new PrintWriter(opt.config)).print(standaloneXmlNode)
-            
+            // add to standalone xml
+            printer.printToStandaloneXml(datasourceOutput, opt.config, opt.datasourceName, opt.xa);
             println "XML was added to config file " << opt.config
 		} else {
             // print the newnly created datasource to std out
+            XMLFormatter formatter = new XMLFormatter();
 			println formatter.prettyXML(datasourceOutput.toXml())
 		}
     }

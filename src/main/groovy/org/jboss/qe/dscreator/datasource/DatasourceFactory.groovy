@@ -1,10 +1,17 @@
 package org.jboss.qe.dscreator.datasource
 
+import org.jboss.qe.dscreator.common.Utils;
+
 /**
  * @author Martin Simka
  */
 class DatasourceFactory {
 
+    public static Datasource createDatasource(String dbAllocatorPropertiesPath, String name, String jndiName, String driver) {
+        Properties loadedProps = Utils.loadDbAllocatorProperties(dbAllocatorPropertiesPath);
+        return createDatasource(loadedProps, name, jndiName, driver);
+    }
+    
     public static Datasource createDatasource(Properties dbAllocatorProperties, String name, String jndiName, String driver) {
         if(dbAllocatorProperties["db.primary_label"] != null) {
             //add specific implementation

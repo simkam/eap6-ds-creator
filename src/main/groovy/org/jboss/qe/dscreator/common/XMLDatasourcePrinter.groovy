@@ -2,14 +2,31 @@ package org.jboss.qe.dscreator.common
 
 import groovy.xml.XmlUtil;
 
-class XMLPrinter {
+/**
+ * Class with utility methods to print xml string to file or something.
+ */
+class XMLDatasourcePrinter {
+    /**
+     * Printing xml datasource to -ds.xml file.
+     *   
+     * @param xmlFormat datasource created by datasource factory which implements methods of XMLFormattable and returns xml as string  
+     * @param outFile  where to save the ds.xml file
+     */
     def printToFile(XMLFormattable xmlFormat, String outFile) {
         FileWriter fileWriter = new FileWriter(outFile)
         def xmlOut = XmlUtil.serialize("\n<datasources>" + xmlFormat.toXml() + "</datasources>");
         fileWriter.write(xmlOut)
         fileWriter.flush()
     }
-    
+
+    /**
+     * Taking the datasource and putting it inside of the standalone.xml configuration.
+     *     
+     * @param xmlFormat  datasource created by datasource factory which implements methods of XMLFormattable and returns xml as string
+     * @param standaloneXmlFile  path to standalone.xml file
+     * @param datasourceName  name of datasource which will be added to config xml file
+     * @param isXA  is the datasource xa or not
+     */
     def printToStandaloneXml(XMLFormattable xmlFormat, String standaloneXmlFile, String datasourceName, boolean isXA) {
         def standaloneXmlNode = new XmlParser(false, true).parseText(new File(standaloneXmlFile).text)
         def datasourceNode = new XmlParser(false, true).parseText(xmlFormat.toXml())

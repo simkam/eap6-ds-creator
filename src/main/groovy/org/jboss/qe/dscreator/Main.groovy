@@ -5,7 +5,7 @@ import groovy.xml.StreamingMarkupBuilder;
 
 import org.jboss.qe.dscreator.common.XMLFormattable;
 import org.jboss.qe.dscreator.common.XMLFormatter;
-import org.jboss.qe.dscreator.common.XMLPrinter;
+import org.jboss.qe.dscreator.common.XMLDatasourcePrinter;
 import org.jboss.qe.dscreator.datasource.Datasource
 import org.jboss.qe.dscreator.datasource.DatasourceFactory
 import org.jboss.qe.dscreator.xadatasource.XADatasource
@@ -71,7 +71,7 @@ class Main {
             }
         }
 		
-        XMLPrinter printer = new XMLPrinter();
+        XMLDatasourcePrinter printer = new XMLDatasourcePrinter();
 		if(datasourceOutput == null) {
 			// conditions for creating datasource were not fullfiled
 			printUsage();

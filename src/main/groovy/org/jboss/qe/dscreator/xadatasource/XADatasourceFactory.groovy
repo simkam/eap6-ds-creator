@@ -1,10 +1,17 @@
 package org.jboss.qe.dscreator.xadatasource
 
+import org.jboss.qe.dscreator.common.Utils;
+
 
 /**
  * @author Martin Simka
  */
 class XADatasourceFactory {
+    public static XADatasource createXADatasource(String dbAllocatorPropertiesPath, String name, String jndiName, String driver) {
+        Properties loadedProps = Utils.loadDbAllocatorProperties(dbAllocatorPropertiesPath);
+        return createXADatasource(loadedProps, name, jndiName, driver);
+    }
+    
     public static XADatasource createXADatasource(Properties dbAllocatorProperties, String name, String jndiName, String driver) {
         if (dbAllocatorProperties["db.primary_label"] != null) {
             String label = dbAllocatorProperties["db.primary_label"]

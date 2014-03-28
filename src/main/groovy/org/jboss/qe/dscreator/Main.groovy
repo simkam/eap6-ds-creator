@@ -43,8 +43,10 @@ class Main {
 		// STANDARD datasource
         if (!opt.xa) {
             if (opt.jndiName && opt.driverName && opt.dballocatorProperties && opt.datasourceName) {
+                // data is loaded from specified properties file
                 datasourceOutput = DatasourceFactory.createDatasource(loadDbAllocatorProperties(opt.dballocatorProperties), (String) opt.datasourceName, (String) opt.jndiName, (String) opt.driverName)
             } else if (opt.databaseFamily && opt.datasourceName && opt.jndiName && opt.driverName && opt.connectionUrl && opt.username && opt.password && opt.jta && opt.useJavaContext) {
+                // data is taken from command line arguments
                 datasourceOutput = DatasourceFactory.createDatasource((String) opt.databaseFamily, (String) opt.datasourceName,
                         (String) opt.jndiName, (String) opt.driverName, (String) opt.connectionUrl, (String) opt.username,
                         (String) opt.password, (boolean) opt.jta, (boolean) opt.useJavaContext)
@@ -54,8 +56,10 @@ class Main {
 		// XA datasource
 		if (opt.xa) {
             if (opt.dballocatorProperties && opt.datasourceName && opt.jndiName && opt.driverName) {
+                // data is loaded from specified properties file
                 datasourceOutput = XADatasourceFactory.createXADatasource(loadDbAllocatorProperties(opt.dballocatorProperties), (String) opt.datasourceName, (String) opt.jndiName, (String) opt.driverName)
             } else if(opt.datasourceName && opt.jndiName && opt.driverName && opt.username && opt.password && opt.xaDatasourceClass) {
+                // data is taken from command line arguments
                 List<XADatasourceProperty> xaProps = new ArrayList<XADatasourceProperty>();
                 if(opt.xaProps) {
                     String propsString = (String) opt.xaProps
@@ -82,7 +86,7 @@ class Main {
 		} else if (opt.config){
             // add to standalone xml
             printer.printToStandaloneXml(datasourceOutput, opt.config, opt.datasourceName, opt.xa);
-            println "XML was added to config file " << opt.config
+            println "Config file " << opt.config << " was updated by datasource " << opt.datasourceName
 		} else {
             // print the newnly created datasource to std out
             XMLFormatter formatter = new XMLFormatter();

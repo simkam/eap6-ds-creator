@@ -33,10 +33,19 @@ class XMLDatasourcePrinter {
 
         // we want to have new datasource if it's not added yet
         String datasourceType = isXA ? 'xa-datasource' : 'datasource'
-        if(standaloneXmlNode.profile.subsystem.datasources."${datasourceType}".find{it.'@name' == datasourceName} == null) {
-            // warn: not sure why but appendNode does strange things here
+        Node oldDatasourceNode = standaloneXmlNode.profile.subsystem.datasources."${datasourceType}".find{it.'@name' == datasourceName || it.'@pool-name' == datasourceName};
+        /*if(oldDatasourceNode == null) {
+            oldDatasourceNode = standaloneXmlNode.profile.subsystem.datasources."${datasourceType}".find{it.'@pool-name' == datasourceName};
+        }*/
+        
+        if(oldDatasourceNode == null) {
+            // note: not sure why but appendNode does strange things here
+            println "Adding " << datasourceType << " " << datasourceName << " as a new child of subsystem.datasources"
             standaloneXmlNode.profile.subsystem.datasources[0]?.append(datasourceNode)
-         }
+        } else {
+            println "Replacing " << datasourceType << " " << datasourceName << " by a new content"
+            oldDatasourceNode.replaceNode(datasourceNode)
+        }
         
         // writing results back to config file (standalone.xml)
         new XmlNodePrinter(new PrintWriter(standaloneXmlFile)).print(standaloneXmlNode)

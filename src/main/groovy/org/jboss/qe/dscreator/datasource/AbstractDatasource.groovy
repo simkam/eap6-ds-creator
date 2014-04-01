@@ -6,8 +6,8 @@ import groovy.xml.StreamingMarkupBuilder;
 /**
  * @author Martin Simka
  */
-abstract class AbstractDatasource<T extends AbstractDatasource<T>> implements Datasource{
-    private String dsName;
+abstract class AbstractDatasource<T extends AbstractDatasource<T>> implements Datasource {
+
     private String dsJndiName
     private String dsPoolName
     private Boolean dsUseJavaContext
@@ -19,16 +19,6 @@ abstract class AbstractDatasource<T extends AbstractDatasource<T>> implements Da
     private String dsConnectionUrl
 
     protected abstract T me();
-
-    @Override
-    public String getDsName() {
-        return dsName
-    }
-
-    T dsName(String dsName) {
-        this.dsName = dsName
-        return me()
-    }
 
     @Override
     public String getDsJndiName() {
@@ -145,7 +135,7 @@ abstract class AbstractDatasource<T extends AbstractDatasource<T>> implements Da
         markupBuilder.useDoubleQuotes = true
 		
 		return markupBuilder.bind {
-		    datasource(jta: dsJta, "jndi-name": dsJndiName, "pool-name": dsPoolName, enabled: dsEnabled, "use-java-context": dsUseJavaContext, name : dsName) {
+		    datasource(jta: dsJta, "jndi-name": dsJndiName, "pool-name": dsPoolName, enabled: dsEnabled, "use-java-context": dsUseJavaContext) {
 				'connection-url'(dsConnectionUrl)
 				driver(dsDriver)
 				security() {

@@ -6,7 +6,7 @@ import org.jboss.qe.dscreator.common.XMLFormattable;
  * @author Martin Simka
  */
 public interface XADatasource extends XMLFormattable {
-    String getDsName()
+
     String getDsJndiName()
     String getDsPoolName()
     String getDsUsername()

@@ -6,7 +6,7 @@ import groovy.xml.MarkupBuilder
  * @author Martin Simka
  */
 abstract class AbstractXADatasource<T extends AbstractXADatasource<T>> implements XADatasource {
-    private String dsName;
+
     private String dsJndiName
     private String dsPoolName
     private Boolean dsEnabled
@@ -21,16 +21,6 @@ abstract class AbstractXADatasource<T extends AbstractXADatasource<T>> implement
     }
 
     protected abstract T me();
-
-    @Override
-    String getDsName() {
-        return dsName
-    }
-
-    T dsName(String dsName) {
-        this.dsName = dsName
-        return me()
-    }
 
     @Override
     String getDsJndiName() {
@@ -140,7 +130,7 @@ abstract class AbstractXADatasource<T extends AbstractXADatasource<T>> implement
 		markupBuilder.useDoubleQuotes = true
 		
 		return markupBuilder.bind { builder ->
-			'xa-datasource'("jndi-name": dsJndiName, "pool-name": dsPoolName, enabled: dsEnabled, name: dsName) {
+			'xa-datasource'("jndi-name": dsJndiName, "pool-name": dsPoolName, enabled: dsEnabled) {
 	            getDsXADatasourceProperties().each { prop ->
 	                'xa-datasource-property'(name: prop.getName(), prop.getValue())
 	            }

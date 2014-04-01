@@ -30,12 +30,11 @@ class DatasourceFactory {
 
     private static GenericDatabaseDatasource createGenericDatabaseDatasource(Properties props, String name, String jndiName, String driver) {
         GenericDatabaseDatasource ds = new GenericDatabaseDatasource()
-                .dsName(name)
                 .dsConnectionUrl(props.getProperty("db.jdbc_url"))
                 .dsUsername(props.getProperty("db.username"))
                 .dsPassword(props.getProperty("db.password"))
                 .dsJta(true)
-                .dsPoolName(name + "_pool")
+                .dsPoolName(name) // name is set as poolname - jboss-cli.sh uses this in the same way
                 .dsDriver(driver)
                 .dsEnabled(true)
                 .dsUseJavaContext(true)
@@ -45,12 +44,11 @@ class DatasourceFactory {
 
     private static GenericDatabaseDatasource createGenericDatabaseDatasource(String name, String jndiName, String driver, String connnectionUrl, String username, String password, boolean jta, boolean useJavaContext) {
         GenericDatabaseDatasource ds = new GenericDatabaseDatasource()
-                .dsName(name)
                 .dsConnectionUrl(connnectionUrl)
                 .dsUsername(username)
                 .dsPassword(password)
                 .dsJta(jta)
-                .dsPoolName(name + "_pool")
+                .dsPoolName(name)
                 .dsDriver(driver)
                 .dsEnabled(true)
                 .dsUseJavaContext(useJavaContext)

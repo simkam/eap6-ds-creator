@@ -9,8 +9,6 @@ import com.sun.xml.internal.ws.api.config.management.policy.ManagedServiceAssert
  * @author Martin Simka
  */
 interface Datasource extends XMLFormattable {
-
-   String getDsName()
    String getDsJndiName()
    String getDsPoolName()
    String getDsConnectionUrl()

@@ -34,9 +34,6 @@ class XMLDatasourcePrinter {
         // we want to have new datasource if it's not added yet
         String datasourceType = isXA ? 'xa-datasource' : 'datasource'
         Node oldDatasourceNode = standaloneXmlNode.profile.subsystem.datasources."${datasourceType}".find{it.'@name' == datasourceName || it.'@pool-name' == datasourceName};
-        /*if(oldDatasourceNode == null) {
-            oldDatasourceNode = standaloneXmlNode.profile.subsystem.datasources."${datasourceType}".find{it.'@pool-name' == datasourceName};
-        }*/
         
         if(oldDatasourceNode == null) {
             // note: not sure why but appendNode does strange things here

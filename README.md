@@ -36,6 +36,6 @@ Attributes:
 `./bin/eap6-ds-creator parameters`
 
 ###### run: ######
-`java -cp './build/libs/eap6-ds-creator-1.1.0.SNAPSHOT.jar:<path-to>/groovy-all-2.2.1.jar:<path-to>/commons-cli-1.2.jar'  org.jboss.qe.dscreator.Main parameters`
+`java -cp './build/libs/eap6-ds-creator-1.1.0.Final.jar:<path-to>/groovy-all-2.2.1.jar:<path-to>/commons-cli-1.2.jar'  org.jboss.qe.dscreator.Main parameters`
 
 

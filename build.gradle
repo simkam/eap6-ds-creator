@@ -11,6 +11,10 @@ mainClassName = 'org.jboss.qe.dscreator.Main'
 sourceCompatibility = '1.6'
 targetCompatibility = '1.6'
 
+// needs to have default values for maven publish plugin does not complain - see section publishing
+project.ext.publishUsername = project.ext.has('publishUsername') ? project.publishUsername : 'unknown'
+project.ext.publishPassword = project.ext.has('publishPassword') ? project.publishPassword : 'unknown'
+
 idea {
         project {
                 languageLevel = '1.6'
@@ -42,17 +46,52 @@ dependencies {
 }
 
 
-
+/*
+  For publishing on Nexus you need to run command like
+  gradle publishMavenJavaPublicationToJboss-qa-releasesRepository -PpublishUsername=username -PpublishPassword=password
+  or just specific publish command
+  gradle publishMavenJavaPublicationToJboss-qa-releasesRepository 
+  and define the username and password in gradle.properties file in project directory
+*/
 task sourceJar(type: Jar) {
     from sourceSets.main.allSource
 }
 publishing {
   publications {
     mavenJava(MavenPublication) {
-        from components.java
-        artifact sourceJar {
-            classifier "source"
-        }
+      from components.java
+      artifact (sourceJar) {
+          classifier 'sources'
+      }
+      artifact ('README.md') {
+          classifier = 'README'
+          extension = 'md'
+      }
+      pom.withXml {
+        // there is 'a problem' that default scope for dependencies in pom is runtime
+        def scopeNodes = asNode().depthFirst().findAll { println it.name().getQualifiedName(); it.name().getQualifiedName() == 'scope' }
+        scopeNodes.each {it.setValue('compile')}
+      }
     }
   }
+ 
+ repositories {
+    maven {
+      name 'jboss-qa-releases'
+      url 'http://nexus.qa.jboss.com:8081/nexus/content/repositories/releases'
+      credentials {
+          username project.publishUsername
+          password project.publishPassword
+      }
+    }
+    maven {
+      name 'jboss-qa-snapshots'
+      url 'http://nexus.qa.jboss.com:8081/nexus/content/repositories/snapshots'
+      credentials {
+          username project.publishUsername
+          password project.publishPassword
+      }
+    }
+  }
+
 }

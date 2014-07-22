@@ -4,7 +4,7 @@ apply plugin: 'application'
 apply plugin: 'maven-publish'
 
 group = 'org.jboss.qe'
-version = '1.1.0.Final'
+version = '1.2.0.Final-SNAPSHOT'
 
 mainClassName = 'org.jboss.qe.dscreator.Main'
 

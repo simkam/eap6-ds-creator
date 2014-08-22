@@ -95,3 +95,11 @@ publishing {
   }
 
 }
+
+// create fat jar with all dependencies inside
+task fatJar(type: Jar) {
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
